@@ -107,7 +107,7 @@
                                                 echo 'Login et/ou mot de passe est incorrecte !';
                                                 break;
                                             case 'new_user_inserted':
-                                                echo "Bienvenue <span class='text-success'>{$data['name']}</span> , votre inscription est términé avec succées !";
+                                                echo "Bienvenue <span class='text-success'>{$data['data']['name']}</span> , votre inscription est términé avec succées !";
                                                 break;
                                             case 'user_exist':
                                                 echo 'Utilisateur existe déja !';

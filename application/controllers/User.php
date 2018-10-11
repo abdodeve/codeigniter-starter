@@ -28,8 +28,24 @@ Class User extends CI_Controller {
 
 // Show login page
     public function index() {
+        // If user Connected redirect to Dashboard
+        if($this->isUserLoggedIn())
+            redirect('user/dashboard');
+
         $data = $this->session->flashdata();
         return $this->load->view('template', ['v'=> 'login', 'data'=> $data]);
+    }
+
+    /**
+     * Dashboard page
+     */
+    public function dashboard(){
+        // If user disconnected redirect to login
+        if(!$this->isUserLoggedIn())
+            redirect('/');
+
+        $data = $this->session->userdata();
+        return $this->load->view('dashboard', ['data'=> $data]);
     }
 
     /**
@@ -47,14 +63,20 @@ Class User extends CI_Controller {
         $query = $this->db->query("SELECT count(*) as count
                                    FROM users
                                    WHERE email = '{$data['email']}'");
-        if($query->result() > 0){
+        $res_q = $query->result()[0] ;
+        if($res_q->count > 0){
             $this->session->set_flashdata(['showModal'=> true, 'msgModal'=> 'user_exist']);
             redirect("user");
-           // return $this->load->view('template', ['v'=> 'login', 'showModal'=> true, 'msgModal'=> 'user_exist']);
         }
 
-        $res = $this->db->insert('users', $data);
-        return $this->load->view('template', ['v'=> 'login', 'showModal'=> true, 'msgModal'=> 'new_user_inserted','data'=> $data]);
+        // Insert the User
+        $this->db->insert('users', $data);
+
+        // User inserted
+        $user_data = $this->db->from('users')->where('email', $data['email'])->get()->result_array()[0];
+
+        $this->session->set_flashdata(['showModal'=> true, 'msgModal'=> 'new_user_inserted', 'data'=> $user_data]);
+        redirect("/");
     }
 
 // Check for user login process
@@ -71,21 +93,30 @@ Class User extends CI_Controller {
             'email' => $this->input->post('emailLogin'),
             'password' => $this->input->post('passwordLogin')
         );
-            $isValid = $this->UserModel->login($data, true);
+
+        $data_test = array(
+            'email' => 'abdo@hotmail.com',
+            'password' => '123'
+        );
+
+        $isValid = $this->UserModel->login($data);
+
+
 
         // If Credentials incorrecte
         if($isValid == FALSE){
             $this->session->set_flashdata(['showModal'=>true, 'msgModal'=> 'invalid_credentials']);
             redirect("user");
-           //  return $this->load->view('template', ['v' => 'login', 'showModal'=>true, 'msgModal'=> 'invalid_credentials']);
         }
 
         // Credential correcte
-            $session_data = ['email' => $this->input->post('email', true)];
+        $user_data = $this->db->from('users')->where('email', $data['email'])->get()->result_array()[0];
 
-            // Add user data in session
-            $this->session->set_userdata('logged_in', $session_data);
-            return $this->load->view('welcome_message');
+        // Add user data in session
+        $session_data = ['email' => $user_data['email'], 'name'=> $user_data['name']];
+        $this->session->set_userdata('logged_in', $session_data);
+
+        redirect("user/dashboard");
     }
 
 // Logout from admin page
@@ -93,8 +124,18 @@ Class User extends CI_Controller {
     // Removing session data
         $this->session->unset_userdata('logged_in');
         $this->session->sess_destroy();
-        $data['message_display'] = 'Successfully Logout';
-        return $this->load->view('template', array('v'=> 'login'));
+        redirect('/');
+    }
+
+    /**
+     * isUserLoggedIn
+     * Check either user logged in or not
+     *
+     * @return bool
+     */
+    public function isUserLoggedIn(){
+        $isLoggedIn = $this->session->has_userdata('logged_in');
+        return $isLoggedIn ? true : false ;
     }
 
 }
