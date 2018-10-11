@@ -20,6 +20,19 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('welcome_message');
+        echo 'hello' ;
+
+    //    $this->load->view('welcome_message');
 	}
+
+    public function adev()
+    {
+        echo 'adev test' ;
+//        $this->load->library('migration');
+//
+//        if ($this->migration->current() === FALSE)
+//        {
+//            show_error($this->migration->error_string());
+//        }
+    }
 }
