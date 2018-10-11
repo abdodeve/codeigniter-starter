@@ -30,10 +30,10 @@ Class User extends CI_Controller {
     public function index() {
         // If user Connected redirect to Dashboard
         if($this->isUserLoggedIn())
-            redirect('user/dashboard');
+            redirect('dashboard');
 
         $data = $this->session->flashdata();
-        return $this->load->view('template', ['v'=> 'login', 'data'=> $data]);
+        return $this->load->view('login', ['data'=> $data]);
     }
 
     /**
@@ -85,9 +85,10 @@ Class User extends CI_Controller {
         $this->form_validation->set_rules('emailLogin', 'Email of user', 'trim|required');
         $this->form_validation->set_rules('passwordLogin', 'Password', 'trim|required');
 
-        if ($this->form_validation->run() == FALSE)
-            return $this->load->view('template', ['v' => 'login', 'showModal'=>true, 'msgModal'=> 'form_validation']);
-
+        if ($this->form_validation->run() == FALSE){
+            $this->session->set_flashdata(['showModal'=>true, 'msgModal'=> 'form_validation']);
+            redirect("user");
+        }
 
         $data = array(
             'email' => $this->input->post('emailLogin'),
@@ -103,7 +104,6 @@ Class User extends CI_Controller {
 
 
 
-        // If Credentials incorrecte
         if($isValid == FALSE){
             $this->session->set_flashdata(['showModal'=>true, 'msgModal'=> 'invalid_credentials']);
             redirect("user");
@@ -116,7 +116,7 @@ Class User extends CI_Controller {
         $session_data = ['email' => $user_data['email'], 'name'=> $user_data['name']];
         $this->session->set_userdata('logged_in', $session_data);
 
-        redirect("user/dashboard");
+        redirect("dashboard");
     }
 
 // Logout from admin page
