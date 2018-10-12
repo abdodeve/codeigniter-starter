@@ -23,123 +23,31 @@ $this->load->view('templates/top_bar');
                     </tr>
                     </thead>
                     <tbody>
+                    <?php foreach($produits as $produit): ?>
                     <tr>
                         <td>
-                            <img src="<?php echo base_url(); ?>assets/images/users/avatar-2.jpg" alt="contact-img" title="contact-img" class="rounded-circle thumb-sm" />
+                            <img src="<?php echo base_url(); ?>uploads/<?php echo $produit->img_src ; ?>" alt="contact-img" title="contact-img" class="rounded-circle thumb-sm" />
                         </td>
 
                         <td>
-                            <h5 class="m-0 font-weight-normal">Tomaslau</h5>
-                            <p class="mb-0 text-muted"><small>Member Since 2017</small></p>
+                            <h5 class="m-0 font-weight-normal"><?php echo $produit->nom ; ?></h5>
+                            <p class="mb-0 text-muted"><small><?php echo $produit->libelle ; ?></small></p>
                         </td>
 
                         <td>
-                            <i class="mdi mdi-currency-btc text-primary"></i> BTC
+                            <i class="mdi mdi mdi-cash text-primary"></i> <?php echo $produit->prix ; ?> MAD
                         </td>
 
                         <td>
-                            0.00097036 BTC
+                            <?php echo $produit->description ; ?>
                         </td>
 
                         <td>
-                            <a href="#" class="btn btn-sm btn-custom"><i class="fa fa-edit"></i></a>
-                            <a href="#" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                            <a href="<?php echo base_url(); ?>/dashboard/edit/<?php echo $produit->id ; ?>" class="btn btn-sm btn-custom"><i class="fa fa-edit"></i></a>
+                            <a href="<?php echo base_url(); ?>/dashboard/delete/<?php echo $produit->id ; ?>" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
-
-                    <tr>
-                        <td>
-                            <img src="<?php echo base_url(); ?>assets/images/users/avatar-3.jpg" alt="contact-img" title="contact-img" class="rounded-circle thumb-sm" />
-                        </td>
-
-                        <td>
-                            <h5 class="m-0 font-weight-normal">Erwin E. Brown</h5>
-                            <p class="mb-0 text-muted"><small>Member Since 2017</small></p>
-                        </td>
-
-                        <td>
-                            <i class="mdi mdi-currency-eth text-primary"></i> ETH
-                        </td>
-
-                        <td>
-                            1.70360009 ETH
-                        </td>
-
-                        <td>
-                                <a href="#" class="btn btn-sm btn-custom"><i class="fa fa-edit"></i></a>
-                                <a href="#" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <img src="<?php echo base_url(); ?>assets/images/users/avatar-4.jpg" alt="contact-img" title="contact-img" class="rounded-circle thumb-sm" />
-                        </td>
-
-                        <td>
-                            <h5 class="m-0 font-weight-normal">Margeret V. Ligon</h5>
-                            <p class="mb-0 text-muted"><small>Member Since 2017</small></p>
-                        </td>
-
-                        <td>
-                            <i class="mdi mdi-currency-eur text-primary"></i> EUR
-                        </td>
-
-                        <td>
-                            12.58 EUR
-                        </td>
-
-                        <td>
-                            <a href="#" class="btn btn-sm btn-custom"><i class="fa fa-edit"></i></a>
-                            <a href="#" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <img src="<?php echo base_url(); ?>assets/images/users/avatar-5.jpg" alt="contact-img" title="contact-img" class="rounded-circle thumb-sm" />
-                        </td>
-
-                        <td>
-                            <h5 class="m-0 font-weight-normal">Jose D. Delacruz</h5>
-                            <p class="mb-0 text-muted"><small>Member Since 2017</small></p>
-                        </td>
-
-                        <td>
-                            <i class="mdi mdi-currency-cny text-primary"></i> CNY
-                        </td>
-
-                        <td>
-                            30.83 CNY
-                        </td>
-
-                        <td>
-                                <a href="#" class="btn btn-sm btn-custom"><i class="fa fa-edit"></i></a>
-                                <a href="#" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <img src="<?php echo base_url(); ?>assets/images/users/avatar-6.jpg" alt="contact-img" title="contact-img" class="rounded-circle thumb-sm" />
-                        </td>
-
-                        <td>
-                            <h5 class="m-0 font-weight-normal">Luke J. Sain</h5>
-                            <p class="mb-0 text-muted"><small>Member Since 2017</small></p>
-                        </td>
-
-                        <td>
-                            <i class="mdi mdi-currency-btc text-primary"></i> BTC
-                        </td>
-
-                        <td>
-                            1.00097036 BTC
-                        </td>
-
-                        <td>
-                            <a href="#" class="btn btn-sm btn-custom"><i class="fa fa-edit"></i></a>
-                            <a href="#" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
-                        </td>
-                    </tr>
-
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -155,29 +63,36 @@ $this->load->view('templates/top_bar');
         </p>
 
         <!-- Form Begin -->
-        <?php echo form_open_multipart('dashboard/insert');?>
-
+        <?php 
+            // On Update Product
+            if(isset($the_product)):
+                echo form_open_multipart('dashboard/update');
+            else:
+                echo form_open_multipart('dashboard/insert');
+            endif; 
+        ?>
              <div class="form-group">
                 <label for="nom">Nom</label>
                 <div>
-                    <input id="nom" name="nom" type="text" class="form-control" placeholder="Pc, tél, parfume .."/>
+                <input id="id" name="id" type="hidden" value="<?php echo isset($the_product->id) ? $the_product->id : ""; ?>"/>
+                    <input id="nom" name="nom" type="text" class="form-control" value="<?php echo isset($the_product->nom) ? $the_product->nom : "";  ?>" placeholder="Pc, tél, parfume .."/>
                 </div>
             </div>
             <div class="form-group">
                     <label for="libelle">Libelle</label>
                     <div>
-                        <input id="libelle" name="libelle" type="text" class="form-control"  placeholder="Jeans 1ere choix italie .."/>
+                        <input id="libelle" name="libelle" type="text" class="form-control" value="<?php echo isset($the_product->libelle) ? $the_product->libelle : "";  ?>" placeholder="Jeans 1ere choix italie .."/>
                     </div>
                 </div>
             <div class="form-group">
                     <label for="prix">Prix</label>
                     <div>
-                        <input id="prix" name="prix" type="text" class="form-control"  placeholder="153, 204 ..."/>
+                        <input id="prix" name="prix" type="text" class="form-control" value="<?php echo isset($the_product->prix) ? $the_product->prix : ""; ?>" placeholder="153, 204 ..."/>
                     </div>
             </div>
             <div class="form-group">
                 <label for="description">Description</label>
-                        <textarea id="description" name="description"></textarea>
+                        <textarea id="description" name="description"><?php echo isset($the_product->description) ? $the_product->description : ""; ?></textarea>
             </div>
 
             <div class="form-group row">
@@ -185,7 +100,11 @@ $this->load->view('templates/top_bar');
                     <div class="col-9">
                         <div class="fileupload fileupload-new" data-provides="fileupload">
                             <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
-                                <img src="<?php echo base_url(); ?>assets/images/small/img-1.jpg" alt="image" />
+                                <?php if(isset($the_product->nom)): ?>
+                                    <img src="<?php echo base_url(); ?>uploads/<?php echo $the_product->img_src; ?>" alt="image" />
+                                <?php else: ?>
+                                    <img src="<?php echo base_url(); ?>assets/images/small/img-1.jpg" alt="image" />
+                                <?php endif; ?>
                             </div>
                             <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
                             <div>
@@ -215,5 +134,66 @@ $this->load->view('templates/top_bar');
 </div> <!-- end col -->
 </div>
 <!-- end row -->
+
+
+<!-- Begin Modal of - MsgBox Modal -->
+
+<?php if(isset($data['showModal']) && $data['showModal'] == true):?>
+<script>
+    jQuery(function($) {
+        $(document).ready(function() {
+            $("#message-modal").modal();
+        });
+    });
+</script>
+<?php endif; ?>
+
+<div id="message-modal" class="modal fade" tabindex="-1" role="dialog"
+        aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h2 class="text-uppercase text-center m-b-30">
+                    <a href="<?php echo base_url(); ?>" class="text-success">
+                        <span><img src="<?php echo base_url(); ?>assets/images/logo.png" alt="" height="28"></span>
+                    </a>
+                </h2>
+
+                <form class="form-horizontal" action="#">
+
+                    <div class="form-group m-b-25">
+                        <div class="col-12">
+                            <h4 style="text-align: center;color: #f1556c !important;">
+                            <?php
+                            switch ($data['msgModal']){
+                                case 'new_product_inserted':
+                                    echo 'Produit est ajouté !';
+                                    break;
+                                case 'product_modified':
+                                    echo "Produit est modifié !";
+                                    break;
+                                case 'product_deleted':
+                                    echo 'Produit est supprimé !';
+                                    break;
+                                case 'form_validation':
+                                    echo validation_errors();
+                                    break;
+
+                            }
+                            ?>
+                            </h4>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- END Modal of - MsgBox Modal -->
+
+
 <?php
 $this->load->view('templates/footer');
