@@ -167,7 +167,7 @@
                     </a>
 
                     <!-- item-->
-                    <form method="post" id="logout_btn" action="<?php echo base_url('user/logout');?>">
+                    <form method="post" id="logout_btn" action="<?php echo base_url('auth/logout');?>">
                         <a  href="javascript:void(0);" class="dropdown-item notify-item" 
                             onclick="document.getElementById('logout_btn').submit();">
                             <i class="fi-power"></i> <span>Logout</span>

@@ -164,23 +164,7 @@ $this->load->view('templates/top_bar');
                     <div class="form-group m-b-25">
                         <div class="col-12">
                             <h4 style="text-align: center;color: #f1556c !important;">
-                            <?php
-                            switch ($data['msgModal']){
-                                case 'new_product_inserted':
-                                    echo 'Produit est ajouté !';
-                                    break;
-                                case 'product_modified':
-                                    echo "Produit est modifié !";
-                                    break;
-                                case 'product_deleted':
-                                    echo 'Produit est supprimé !';
-                                    break;
-                                case 'form_validation':
-                                    echo validation_errors();
-                                    break;
-
-                            }
-                            ?>
+                                <?php echo $data['message'] ; ?>
                             </h4>
                         </div>
                     </div>

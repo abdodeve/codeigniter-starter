@@ -23,7 +23,6 @@
 </head>
 
 <body class="account-pages">
-
         <!-- Begin page -->
         <div class="accountbg" style="background: url('<?php echo base_url(); ?>assets/images/bg-1.jpg');background-size: cover;"></div>
 
@@ -40,13 +39,12 @@
                                     <span><img src="<?php echo base_url(); ?>assets/images/logo.png" alt="" height="26"></span>
                                 </a>
                             </h2>
-
-                            <form method="post" action="<?php echo base_url('user/userLogin');?>">
+                            <form method="post" action="<?php echo base_url('auth/login');?>">
 
                             <div class="form-group m-b-20 row">
                                     <div class="col-12">
                                         <label for="emailLogin">Email address</label>
-                                        <input class="form-control" type="email" id="emailLogin" name="emailLogin" required="" placeholder="Enter your email">
+                                        <input class="form-control" type="email" id="identity" name="identity" placeholder="Enter your email">
                                     </div>
                                 </div>
 
@@ -54,7 +52,7 @@
                                     <div class="col-12">
                                         <a href="page-recoverpw.html" class="text-muted pull-right"><small>Forgot your password?</small></a>
                                         <label for="passwordLogin">Password</label>
-                                        <input class="form-control" type="password" required="" id="passwordLogin" name="passwordLogin" placeholder="Enter your password">
+                                        <input class="form-control" type="password" required="" id="password" name="password" placeholder="Enter your password">
                                     </div>
                                 </div>
 
@@ -73,7 +71,10 @@
 
                                 <div class="form-group row text-center m-t-10">
                                     <div class="col-12">
-                                        <button class="btn btn-block btn-custom waves-effect waves-light" type="submit">Sign In</button>
+                                        <button name="signIN"
+                                                id="signIN"
+                                                class="btn btn-block btn-custom waves-effect waves-light" 
+                                                type="submit">Sign In</button>
                                     </div>
                                 </div>
 
@@ -125,23 +126,7 @@
                                 <div class="form-group m-b-25">
                                     <div class="col-12">
                                         <h4 style="text-align: center;color: #f1556c !important;">
-                                        <?php
-                                        switch ($data['msgModal']){
-                                            case 'invalid_credentials':
-                                                echo 'Login et/ou mot de passe est incorrecte !';
-                                                break;
-                                            case 'new_user_inserted':
-                                                echo "Bienvenue <span class='text-success'>{$data['data']['name']}</span> , votre inscription est términé avec succées !";
-                                                break;
-                                            case 'user_exist':
-                                                echo 'Utilisateur existe déja !';
-                                                break;
-                                            case 'form_validation':
-                                                echo validation_errors();
-                                                break;
-
-                                        }
-                                        ?>
+                                            <?php echo $data['message']; ?>
                                         </h4>
                                     </div>
                                 </div>
@@ -171,7 +156,7 @@
                             </h2>
 
 
-                            <form method="post" action="<?php echo base_url('user/insert');?>">
+                            <form method="post" action="<?php echo base_url('Auth/signUp');?>">
 
                                 <div class="form-group m-b-25">
                                     <div class="col-12">
@@ -183,14 +168,14 @@
                                 <div class="form-group m-b-25">
                                     <div class="col-12">
                                         <label for="email">Email address</label>
-                                        <input class="form-control" type="email" id="email" name="email" required="" placeholder="john@deo.com">
+                                        <input class="form-control" type="email" id="emailSignUP" name="emailSignUP" required="" placeholder="john@deo.com">
                                     </div>
                                 </div>
 
                                 <div class="form-group m-b-25">
                                     <div class="col-12">
                                         <label for="password">Password</label>
-                                        <input class="form-control" type="password" name="password" id="password" required="" placeholder="Enter your password">
+                                        <input class="form-control" type="password" name="passwordSignUP" id="passwordSignUP" required="" placeholder="Enter your password">
                                     </div>
                                 </div>
 

@@ -21,12 +21,22 @@ Class Dashboard extends CI_Controller {
 
         // Load session library
         $this->load->library('session');
+
+		$this->load->library('ion_auth');
+		$this->load->helper('language');
+		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
+		$this->lang->load('auth');
     }
 
     /**
      * Root page
      */
     public function index(){
+
+        // redirect them to the login page
+        if (!$this->ion_auth->logged_in())
+			redirect('auth/login', 'refresh');
+
         // Get products
         $products = $this->db->from('produits')->get()->result() ;
 
